@@ -110,6 +110,132 @@
     <span>⬆ Drop ironman.glb here to load your model</span>
   </div>
 
+  <!-- Theory Panel -->
+  <div id="theory-panel">
+    <div class="panel-header">
+      <span class="panel-icon">∑</span>
+      <span>3D TRANSFORMATION THEORY</span>
+    </div>
+
+    <!-- ── TRANSLATION ── -->
+    <div class="theory-section">
+      <button class="theory-acc active" data-acc="tc-translation">
+        <span class="t-icon">↔</span> TRANSLATION
+        <span class="acc-arrow">▾</span>
+      </button>
+      <div class="theory-body" id="tc-translation">
+        <div class="formula-block">
+          <div class="formula-line">x&prime; = x + t<sub>x</sub></div>
+          <div class="formula-line">y&prime; = y + t<sub>y</sub></div>
+          <div class="formula-line">z&prime; = z + t<sub>z</sub></div>
+        </div>
+        <div class="matrix-label">Translation Matrix <span class="m-name">[T]</span></div>
+        <div class="matrix-wrap">
+          <div class="m-brk-l"></div>
+          <table class="m-table">
+            <tr><td>1</td><td>0</td><td>0</td><td class="m-live t-live" id="mt-tx">0.00</td></tr>
+            <tr><td>0</td><td>1</td><td>0</td><td class="m-live t-live" id="mt-ty">0.00</td></tr>
+            <tr><td>0</td><td>0</td><td>1</td><td class="m-live t-live" id="mt-tz">0.00</td></tr>
+            <tr><td>0</td><td>0</td><td>0</td><td>1</td></tr>
+          </table>
+          <div class="m-brk-r"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── SCALING ── -->
+    <div class="theory-section">
+      <button class="theory-acc active" data-acc="tc-scaling">
+        <span class="s-icon">⤡</span> SCALING
+        <span class="acc-arrow">▾</span>
+      </button>
+      <div class="theory-body" id="tc-scaling">
+        <div class="formula-block">
+          <div class="formula-line">x&prime; = x &sdot; s<sub>x</sub></div>
+          <div class="formula-line">y&prime; = y &sdot; s<sub>y</sub></div>
+          <div class="formula-line">z&prime; = z &sdot; s<sub>z</sub></div>
+          <div class="formula-note">Uniform: s<sub>x</sub> = s<sub>y</sub> = s<sub>z</sub> = s</div>
+        </div>
+        <div class="matrix-label">Scaling Matrix <span class="m-name">[S]</span></div>
+        <div class="matrix-wrap">
+          <div class="m-brk-l"></div>
+          <table class="m-table">
+            <tr><td class="m-live s-live" id="ms-s1">1.00</td><td>0</td><td>0</td><td>0</td></tr>
+            <tr><td>0</td><td class="m-live s-live" id="ms-s2">1.00</td><td>0</td><td>0</td></tr>
+            <tr><td>0</td><td>0</td><td class="m-live s-live" id="ms-s3">1.00</td><td>0</td></tr>
+            <tr><td>0</td><td>0</td><td>0</td><td>1</td></tr>
+          </table>
+          <div class="m-brk-r"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── ROTATION ── -->
+    <div class="theory-section">
+      <button class="theory-acc active" data-acc="tc-rotation">
+        <span class="r-icon">↻</span> ROTATION
+        <span class="acc-arrow">▾</span>
+      </button>
+      <div class="theory-body" id="tc-rotation">
+
+        <!-- Rx -->
+        <div class="rot-axis-label">X-axis <span class="angle-badge" id="angle-x">&theta; = 0&deg;</span></div>
+        <div class="formula-block small">
+          <div class="formula-line">y&prime; = y cos&theta; &minus; z sin&theta;</div>
+          <div class="formula-line">z&prime; = y sin&theta; + z cos&theta;</div>
+        </div>
+        <div class="matrix-label">R<sub>x</sub></div>
+        <div class="matrix-wrap">
+          <div class="m-brk-l"></div>
+          <table class="m-table">
+            <tr><td>1</td><td>0</td><td>0</td><td>0</td></tr>
+            <tr><td>0</td><td class="m-live r-live" id="mrx-c">1.00</td><td class="m-live r-live neg" id="mrx-ns">&minus;0.00</td><td>0</td></tr>
+            <tr><td>0</td><td class="m-live r-live" id="mrx-s">0.00</td><td class="m-live r-live" id="mrx-c2">1.00</td><td>0</td></tr>
+            <tr><td>0</td><td>0</td><td>0</td><td>1</td></tr>
+          </table>
+          <div class="m-brk-r"></div>
+        </div>
+
+        <!-- Ry -->
+        <div class="rot-axis-label" style="margin-top:12px">Y-axis <span class="angle-badge" id="angle-y">&theta; = 0&deg;</span></div>
+        <div class="formula-block small">
+          <div class="formula-line">x&prime; = x cos&theta; + z sin&theta;</div>
+          <div class="formula-line">z&prime; = &minus;x sin&theta; + z cos&theta;</div>
+        </div>
+        <div class="matrix-label">R<sub>y</sub></div>
+        <div class="matrix-wrap">
+          <div class="m-brk-l"></div>
+          <table class="m-table">
+            <tr><td class="m-live r-live" id="mry-c">1.00</td><td>0</td><td class="m-live r-live" id="mry-s">0.00</td><td>0</td></tr>
+            <tr><td>0</td><td>1</td><td>0</td><td>0</td></tr>
+            <tr><td class="m-live r-live neg" id="mry-ns">&minus;0.00</td><td>0</td><td class="m-live r-live" id="mry-c2">1.00</td><td>0</td></tr>
+            <tr><td>0</td><td>0</td><td>0</td><td>1</td></tr>
+          </table>
+          <div class="m-brk-r"></div>
+        </div>
+
+        <!-- Rz -->
+        <div class="rot-axis-label" style="margin-top:12px">Z-axis <span class="angle-badge" id="angle-z">&theta; = 0&deg;</span></div>
+        <div class="formula-block small">
+          <div class="formula-line">x&prime; = x cos&theta; &minus; y sin&theta;</div>
+          <div class="formula-line">y&prime; = x sin&theta; + y cos&theta;</div>
+        </div>
+        <div class="matrix-label">R<sub>z</sub></div>
+        <div class="matrix-wrap">
+          <div class="m-brk-l"></div>
+          <table class="m-table">
+            <tr><td class="m-live r-live" id="mrz-c">1.00</td><td class="m-live r-live neg" id="mrz-ns">&minus;0.00</td><td>0</td><td>0</td></tr>
+            <tr><td class="m-live r-live" id="mrz-s">0.00</td><td class="m-live r-live" id="mrz-c2">1.00</td><td>0</td><td>0</td></tr>
+            <tr><td>0</td><td>0</td><td>1</td><td>0</td></tr>
+            <tr><td>0</td><td>0</td><td>0</td><td>1</td></tr>
+          </table>
+          <div class="m-brk-r"></div>
+        </div>
+
+      </div>
+    </div>
+  </div><!-- /#theory-panel -->
+
   <!-- Three.js via importmap (ES modules — r160) -->
   <script type="importmap">
   {

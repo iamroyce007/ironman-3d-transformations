@@ -368,3 +368,169 @@ body::after {
   0%, 100% { opacity: 1; }
   50%       { opacity: 0.3; }
 }
+
+/* ── Theory Panel ────────────────────────────────────────────── */
+#theory-panel {
+  position: fixed;
+  right: 20px;
+  top: 60px;
+  bottom: 90px;
+  z-index: 20;
+  width: 272px;
+  background: var(--panel-bg);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 14px;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow:
+    0 0 0 1px rgba(0,207,255,0.06),
+    0 8px 40px rgba(0,0,0,0.7),
+    inset 0 1px 0 rgba(255,255,255,0.05);
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0,207,255,0.2) transparent;
+}
+
+#theory-panel::-webkit-scrollbar { width: 4px; }
+#theory-panel::-webkit-scrollbar-track { background: transparent; }
+#theory-panel::-webkit-scrollbar-thumb { background: rgba(0,207,255,0.2); border-radius: 4px; }
+
+/* Accordion button */
+.theory-acc {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  width: 100%;
+  background: none;
+  border: none;
+  border-top: 1px solid var(--border);
+  padding: 9px 0 6px;
+  cursor: pointer;
+  font-family: var(--font-hud);
+  font-size: 0.58rem;
+  letter-spacing: 0.18em;
+  color: var(--gold);
+  text-align: left;
+}
+
+.theory-acc .acc-arrow {
+  margin-left: auto;
+  transition: transform 0.25s;
+  color: var(--text-dim);
+}
+
+.theory-acc:not(.active) .acc-arrow { transform: rotate(-90deg); }
+
+/* Body collapses */
+.theory-body {
+  overflow: hidden;
+  max-height: 9999px; /* open default */
+  transition: max-height 0.3s ease;
+  padding-bottom: 4px;
+}
+
+.theory-body.collapsed { max-height: 0; }
+
+/* Formula blocks */
+.formula-block {
+  background: rgba(0, 207, 255, 0.04);
+  border-left: 2px solid rgba(0, 207, 255, 0.3);
+  border-radius: 0 6px 6px 0;
+  padding: 7px 10px;
+  margin: 8px 0 6px;
+}
+
+.formula-block.small { padding: 5px 10px; margin: 6px 0 5px; }
+
+.formula-line {
+  font-family: 'Georgia', 'Times New Roman', serif;
+  font-size: 0.78rem;
+  color: #d0eeff;
+  line-height: 1.6;
+  letter-spacing: 0.02em;
+}
+
+.formula-note {
+  font-size: 0.62rem;
+  color: var(--text-dim);
+  margin-top: 5px;
+  font-style: italic;
+}
+
+.matrix-label {
+  font-family: var(--font-hud);
+  font-size: 0.5rem;
+  letter-spacing: 0.15em;
+  color: var(--text-dim);
+  margin: 8px 0 4px;
+}
+
+.m-name { color: var(--arc); }
+
+/* Matrix bracket wrapper */
+.matrix-wrap {
+  display: flex;
+  align-items: stretch;
+  gap: 2px;
+  margin-bottom: 4px;
+}
+
+.m-brk-l, .m-brk-r {
+  width: 5px;
+  flex-shrink: 0;
+  border-top: 1.5px solid rgba(0,207,255,0.5);
+  border-bottom: 1.5px solid rgba(0,207,255,0.5);
+}
+.m-brk-l { border-left: 1.5px solid rgba(0,207,255,0.5); border-radius: 2px 0 0 2px; }
+.m-brk-r { border-right: 1.5px solid rgba(0,207,255,0.5); border-radius: 0 2px 2px 0; }
+
+/* Matrix table */
+.m-table {
+  flex: 1;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-family: 'Courier New', monospace;
+  font-size: 0.65rem;
+}
+
+.m-table td {
+  text-align: right;
+  padding: 2px 5px;
+  color: rgba(180, 210, 255, 0.55);
+  min-width: 38px;
+  white-space: nowrap;
+}
+
+/* Live value highlights */
+.m-live { font-weight: 600; }
+
+.t-live { color: var(--arc) !important; text-shadow: 0 0 8px rgba(0,207,255,0.5); }
+.s-live { color: #34d399 !important; text-shadow: 0 0 8px rgba(52,211,153,0.4); }
+.r-live { color: #c084fc !important; text-shadow: 0 0 8px rgba(192,132,252,0.4); }
+.neg     { color: #f87171 !important; text-shadow: 0 0 8px rgba(248,113,113,0.4); }
+
+/* Rotation sub-sections */
+.rot-axis-label {
+  font-family: var(--font-hud);
+  font-size: 0.52rem;
+  letter-spacing: 0.2em;
+  color: #c084fc;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.angle-badge {
+  font-family: var(--font-hud);
+  font-size: 0.5rem;
+  letter-spacing: 0.1em;
+  color: var(--gold);
+  background: rgba(240,192,64,0.1);
+  border: 1px solid rgba(240,192,64,0.25);
+  border-radius: 10px;
+  padding: 1px 8px;
+  transition: color 0.2s;
+}
+

@@ -375,6 +375,9 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
     // Fill gradients
     [txEl, tyEl, tzEl, rxEl, ryEl, rzEl, scaleEl].forEach(updateSliderFill);
+
+    // Live matrices
+    updateMatrices(tx, ty, tz, rx, ry, rz, s);
   }
 
   // ── Reset ─────────────────────────────────────────────────
@@ -405,6 +408,64 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
   // Initial update
   updateTransform();
+
+  // ── Live Matrix Updater ───────────────────────────────────
+  function set(id, val) {
+    const el = document.getElementById(id);
+    if (el) el.textContent = val;
+  }
+
+  function fmtR(v) { return v.toFixed(2); }
+  function fmtNeg(v) {
+    // Always show the minus sign explicitly for the negated cell
+    return (v >= 0 ? '\u22120.' : '') + Math.abs(v).toFixed(2);
+  }
+
+  function updateMatrices(tx, ty, tz, rx, ry, rz, s) {
+    // Translation [T]
+    set('mt-tx', tx.toFixed(2));
+    set('mt-ty', ty.toFixed(2));
+    set('mt-tz', tz.toFixed(2));
+
+    // Scaling [S]
+    const sv = s.toFixed(2);
+    set('ms-s1', sv); set('ms-s2', sv); set('ms-s3', sv);
+
+    // Rotation X
+    const rxRad = THREE.MathUtils.degToRad(rx);
+    const cRx = Math.cos(rxRad), sRx = Math.sin(rxRad);
+    set('angle-x', `\u03b8 = ${rx}\u00b0`);
+    set('mrx-c',  fmtR(cRx));  set('mrx-c2', fmtR(cRx));
+    set('mrx-s',  fmtR(sRx));
+    set('mrx-ns', (sRx >= 0 ? '\u2212' : '+') + Math.abs(sRx).toFixed(2));
+
+    // Rotation Y
+    const ryRad = THREE.MathUtils.degToRad(ry);
+    const cRy = Math.cos(ryRad), sRy = Math.sin(ryRad);
+    set('angle-y', `\u03b8 = ${ry}\u00b0`);
+    set('mry-c',  fmtR(cRy));  set('mry-c2', fmtR(cRy));
+    set('mry-s',  fmtR(sRy));
+    set('mry-ns', (sRy >= 0 ? '\u2212' : '+') + Math.abs(sRy).toFixed(2));
+
+    // Rotation Z
+    const rzRad = THREE.MathUtils.degToRad(rz);
+    const cRz = Math.cos(rzRad), sRz = Math.sin(rzRad);
+    set('angle-z', `\u03b8 = ${rz}\u00b0`);
+    set('mrz-c',  fmtR(cRz));  set('mrz-c2', fmtR(cRz));
+    set('mrz-s',  fmtR(sRz));
+    set('mrz-ns', (sRz >= 0 ? '\u2212' : '+') + Math.abs(sRz).toFixed(2));
+  }
+
+  // ── Theory Accordion ─────────────────────────────────────
+  document.querySelectorAll('.theory-acc').forEach(btn => {
+    const bodyId = btn.getAttribute('data-acc');
+    const body   = document.getElementById(bodyId);
+    btn.addEventListener('click', () => {
+      const isOpen = btn.classList.contains('active');
+      btn.classList.toggle('active', !isOpen);
+      body.classList.toggle('collapsed', isOpen);
+    });
+  });
 
   // ── Arc light pulse ───────────────────────────────────────
   let arcT = 0;
