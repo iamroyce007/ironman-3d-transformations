@@ -474,29 +474,6 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
     arcLight.intensity = 2.5 + Math.sin(arcT * 2.5) * 0.8;
   }
 
-  // ── Theme Toggle ──────────────────────────────────────────
-  const themeBtn = document.getElementById('theme-toggle');
-  const themeIcon = document.getElementById('theme-icon');
-  const themeLabel = document.getElementById('theme-label');
-  let isLightMode = false;
-
-  themeBtn.addEventListener('click', () => {
-    isLightMode = !isLightMode;
-    document.body.classList.toggle('light-mode', isLightMode);
-    
-    if (isLightMode) {
-      themeIcon.textContent = '🌙';
-      themeLabel.textContent = 'DARK MODE';
-      renderer.setClearColor(0xe0e5ec, 1);
-      gridHelper.material.color.setHex(0x9ca3af);
-    } else {
-      themeIcon.textContent = '☀️';
-      themeLabel.textContent = 'LIGHT MODE';
-      renderer.setClearColor(0x050608, 1);
-      gridHelper.material.color.setHex(0x001833);
-    }
-  });
-
   // ── Resize ────────────────────────────────────────────────
   window.addEventListener('resize', () => {
     camera.aspect = window.innerWidth / window.innerHeight;
