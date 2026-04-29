@@ -1,0 +1,8 @@
+# Report files — not part of the web project
+*.docx
+*.pdf
+*.doc
+
+# OS files
+.DS_Store
+Thumbs.db
