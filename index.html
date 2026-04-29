@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Iron Man — 3D Transformations</title>
+  <meta name="description" content="Interactive 3D Iron Man model with real-time translation, rotation, and scaling transformations powered by Three.js.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- HUD Overlay -->
+  <div id="hud-overlay">
+    <div id="hud-title">
+      <span class="hud-arc">⬡</span>
+      <h1>IRON MAN</h1>
+      <p class="hud-sub">3D TRANSFORMATION SUITE</p>
+    </div>
+    <div id="hud-status">
+      <span class="status-dot"></span>
+      <span id="status-text">SUIT ONLINE</span>
+    </div>
+  </div>
+
+  <!-- Control Panel -->
+  <div id="controls">
+    <div class="panel-header">
+      <span class="panel-icon">⚙</span>
+      <span>TRANSFORMATION MATRIX</span>
+    </div>
+
+    <!-- Translation -->
+    <div class="control-group">
+      <div class="group-title">
+        <span class="axis-icon t-icon">↔</span> TRANSLATION
+      </div>
+      <div class="slider-row">
+        <label>X</label>
+        <input type="range" id="tx" min="-5" max="5" step="0.01" value="0">
+        <span class="val-display" id="tx-val">0.00</span>
+      </div>
+      <div class="slider-row">
+        <label>Y</label>
+        <input type="range" id="ty" min="-5" max="5" step="0.01" value="0">
+        <span class="val-display" id="ty-val">0.00</span>
+      </div>
+      <div class="slider-row">
+        <label>Z</label>
+        <input type="range" id="tz" min="-5" max="5" step="0.01" value="0">
+        <span class="val-display" id="tz-val">0.00</span>
+      </div>
+    </div>
+
+    <!-- Rotation -->
+    <div class="control-group">
+      <div class="group-title">
+        <span class="axis-icon r-icon">↻</span> ROTATION
+      </div>
+      <div class="slider-row">
+        <label>X</label>
+        <input type="range" id="rx" min="0" max="360" step="1" value="0">
+        <span class="val-display" id="rx-val">0°</span>
+      </div>
+      <div class="slider-row">
+        <label>Y</label>
+        <input type="range" id="ry" min="0" max="360" step="1" value="0">
+        <span class="val-display" id="ry-val">0°</span>
+      </div>
+      <div class="slider-row">
+        <label>Z</label>
+        <input type="range" id="rz" min="0" max="360" step="1" value="0">
+        <span class="val-display" id="rz-val">0°</span>
+      </div>
+    </div>
+
+    <!-- Scaling -->
+    <div class="control-group">
+      <div class="group-title">
+        <span class="axis-icon s-icon">⤡</span> SCALING
+      </div>
+      <div class="slider-row">
+        <label>S</label>
+        <input type="range" id="scale" min="0.1" max="3" step="0.01" value="1">
+        <span class="val-display" id="scale-val">1.00×</span>
+      </div>
+    </div>
+
+    <!-- Reset -->
+    <button id="reset-btn">⟳ RESET ALL</button>
+
+    <!-- Auto-rotate toggle -->
+    <button id="autorotate-btn" class="active">◉ AUTO-ROTATE: ON</button>
+  </div>
+
+  <!-- Info Panel (bottom right) -->
+  <div id="info-panel">
+    <div class="info-row"><span>POSITION</span><span id="info-pos">0.00, 0.00, 0.00</span></div>
+    <div class="info-row"><span>ROTATION</span><span id="info-rot">0°, 0°, 0°</span></div>
+    <div class="info-row"><span>SCALE</span><span id="info-scale">1.00×</span></div>
+  </div>
+
+  <!-- Canvas container -->
+  <div id="canvas-container"></div>
+
+  <!-- Model drop zone hint -->
+  <div id="drop-hint">
+    <span>⬆ Drop ironman.glb here to load your model</span>
+  </div>
+
+  <!-- Three.js via importmap (ES modules — r160) -->
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+    }
+  }
+  </script>
+  <script type="module" src="script.js"></script>
+</body>
+</html>
