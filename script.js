@@ -32,7 +32,7 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
   renderer.shadowMap.enabled = true;
   renderer.shadowMap.type = THREE.PCFSoftShadowMap;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 1.1;
+  renderer.toneMappingExposure = 2.8; // Maxed out for extreme vibrancy
   container.appendChild(renderer.domElement);
 
   // Background: deep dark blue-black
@@ -60,32 +60,43 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
   controls.maxDistance = 20;
   controls.target.set(0, 0.5, 0);
 
-  // ── Lighting ──────────────────────────────────────────────
+  // Hemisphere light for natural sky/ground fill
+  const hemiLight = new THREE.HemisphereLight(0xffffff, 0x444444, 1.2);
+  scene.add(hemiLight);
+
   // Ambient fill
-  const ambient = new THREE.AmbientLight(0x102030, 1.2);
+  const ambient = new THREE.AmbientLight(0x404040, 1.5); // Boosted and neutralized color
   scene.add(ambient);
 
   // Key light (warm top-front)
-  const keyLight = new THREE.DirectionalLight(0xffe8d0, 2.5);
+  const keyLight = new THREE.DirectionalLight(0xffffff, 3.5); // Boosted and made whiter
   keyLight.position.set(3, 5, 4);
   keyLight.castShadow = true;
   keyLight.shadow.mapSize.set(1024, 1024);
   scene.add(keyLight);
 
   // Arc reactor fill (cyan, front-center)
-  const arcLight = new THREE.PointLight(0x00cfff, 3, 12);
+  const arcLight = new THREE.PointLight(0x00cfff, 4, 15); // Boosted intensity and range
   arcLight.position.set(0, 0.5, 3);
   scene.add(arcLight);
 
-  // Red accent (Iron Man red)
-  const redLight = new THREE.PointLight(0xff2200, 1.5, 10);
-  redLight.position.set(-3, 2, -2);
+  // Red accent (Iron Man red - Exact #E30022)
+  const redLight = new THREE.PointLight(0xE30022, 10.0, 25); 
+  redLight.position.set(-5, 4, 3);
   scene.add(redLight);
 
-  // Gold accent
-  const goldLight = new THREE.PointLight(0xffa500, 1.2, 10);
-  goldLight.position.set(3, -1, -2);
+  const redFill = new THREE.PointLight(0xCC0000, 6.0, 20); // Darker red fill
+  redFill.position.set(5, 3, 4);
+  scene.add(redFill);
+
+  // Gold accent (Exact #FFC200)
+  const goldLight = new THREE.PointLight(0xFFC200, 8.0, 22); 
+  goldLight.position.set(4, -1, 4);
   scene.add(goldLight);
+
+  const goldFill = new THREE.PointLight(0xD8AF37, 4.0, 15); // Muted gold fill
+  goldFill.position.set(-2, -2, 2);
+  scene.add(goldFill);
 
   // ── Floor / Platform ──────────────────────────────────────
   const floorGeo = new THREE.CylinderGeometry(1.5, 1.5, 0.06, 64);
@@ -114,6 +125,7 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
   // ── Grid Helper ───────────────────────────────────────────
   const gridHelper = new THREE.GridHelper(20, 30, 0x001833, 0x001833);
+  gridHelper.material.transparent = true;
   gridHelper.position.y = -1.58;
   scene.add(gridHelper);
 
@@ -273,6 +285,24 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
           if (child.isMesh) {
             child.castShadow = true;
             child.receiveShadow = true;
+            
+            // Material enhancement for vibrancy
+            if (child.material) {
+              child.material.metalness = Math.max(child.material.metalness, 0.8);
+              child.material.roughness = Math.min(child.material.roughness, 0.2);
+              
+              // Detect red/gold parts by color or name and boost them to MAX with exact palette
+              const color = child.material.color;
+              const name = child.name.toLowerCase();
+              if (color.r > color.g * 1.5 || name.includes('red') || name.includes('body')) {
+                child.material.emissive.setHex(0xE30022); // Target Red
+                child.material.emissiveIntensity = 2.5; 
+              }
+              if ((color.r > 0.5 && color.g > 0.4) || name.includes('gold') || name.includes('yellow') || name.includes('face')) {
+                child.material.emissive.setHex(0xFFC200); // Target Gold
+                child.material.emissiveIntensity = 2.0; 
+              }
+            }
           }
         });
 
@@ -399,6 +429,55 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
     autoBtn.classList.toggle('active', autoRotate);
     autoBtn.textContent = `◉ AUTO-ROTATE: ${autoRotate ? 'ON' : 'OFF'}`;
   });
+
+  // ── Theme Toggle Logic ────────────────────────────────────
+  const themeToggle = document.getElementById('theme-toggle');
+  let isLightMode = localStorage.getItem('theme') === 'light';
+
+  function updateThreeTheme(light) {
+    if (light) {
+      renderer.setClearColor(0xf0f4f8, 1);
+      bgMat.color.setHex(0xe2e8f0);
+      gridHelper.material.color.setHex(0xa0aec0);
+      gridHelper.material.opacity = 0.2;
+      starMat.color.setHex(0x2d3748);
+      starMat.opacity = 0.15;
+      ambient.intensity = 2.2;
+      ambient.color.setHex(0xffffff);
+      floorMat.color.setHex(0xe2e8f0);
+      floorMat.emissive.setHex(0xcbd5e0);
+      ringMat.emissiveIntensity = 1.0;
+    } else {
+      renderer.setClearColor(0x050608, 1);
+      bgMat.color.setHex(0x050810);
+      gridHelper.material.color.setHex(0x001833);
+      gridHelper.material.opacity = 1.0;
+      starMat.color.setHex(0x88bbff);
+      starMat.opacity = 0.6;
+      ambient.intensity = 1.5;
+      ambient.color.setHex(0x404040);
+      floorMat.color.setHex(0x0a1520);
+      floorMat.emissive.setHex(0x001020);
+      ringMat.emissiveIntensity = 2.5;
+    }
+  }
+
+  function toggleTheme() {
+    isLightMode = !isLightMode;
+    document.documentElement.classList.toggle('light-mode', isLightMode);
+    localStorage.setItem('theme', isLightMode ? 'light' : 'dark');
+    themeToggle.querySelector('.theme-icon').textContent = isLightMode ? '🌙' : '☀';
+    updateThreeTheme(isLightMode);
+  }
+
+  themeToggle.addEventListener('click', toggleTheme);
+
+  // Initial theme application
+  if (isLightMode) {
+    document.documentElement.classList.add('light-mode');
+    themeToggle.querySelector('.theme-icon').textContent = '🌙';
+    updateThreeTheme(true);
+  }
 
   // ── Event Listeners (sliders) ─────────────────────────────
   document.querySelectorAll('#controls input[type="range"]').forEach(input => {
